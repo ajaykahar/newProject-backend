@@ -3,11 +3,12 @@ const router = express.Router();
 const shortid = require("shortid");
 const EmployeeModel = require('./../models/Employee')
 const ProjectModel=require('./../models/Project')
+const cors=require('cors')
 
 
 
 
-router.post('/signup', (req, res) => {
+router.post('/signup',cors(), (req, res) => {
   EmployeeModel.findOne({ email: req.body.email }, function (err, existingUser) {
     if (err) {
       console.log(err);
@@ -42,7 +43,7 @@ router.post('/signup', (req, res) => {
   });
 })
 
-router.post('/login', (req, res) => {
+router.post('/login',cors(), (req, res) => {
   if (req.body.email) {
     EmployeeModel.findOne({ email: req.body.email }, (err, user) => {
       if (err) {
@@ -92,7 +93,7 @@ router.post('/login', (req, res) => {
   }
 })
 
-router.get('/employee/all', (req, res) => {
+router.get('/employee/all',cors(), (req, res) => {
   EmployeeModel.find({ _id: { $ne: "5f8535411820be6390db8f07" } })
     .select('-__v  -_id')
     .lean()
@@ -121,7 +122,7 @@ router.get('/employee/all', (req, res) => {
 })
 
 
-router.post("/assign/task", (req, res) => {
+router.post("/assign/task",cors(), (req, res) => {
 
   let projectId = Math.floor(100000 + Math.random() * 900000);
 
@@ -150,7 +151,7 @@ router.post("/assign/task", (req, res) => {
   })
 })
 
-router.post('/allTask', (req, res) => {
+router.post('/allTask',cors(), (req, res) => {
   ProjectModel.find({employeeId:req.body.employeeId})
     .select('-__v  -_id')
     .lean()
@@ -178,7 +179,7 @@ router.post('/allTask', (req, res) => {
     })
 })
 
-router.post('/update/status',(req,res)=>{
+router.post('/update/status',cors(),(req,res)=>{
   ProjectModel.findOneAndUpdate({projectId:req.body.projectId},{status:req.body.status})
   .then(
     data=>{

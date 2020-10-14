@@ -22,7 +22,7 @@ router.post('/signup', (req, res) => {
         name: req.body.name,
         email: req.body.email,
         password: req.body.password,
-        role: "Employee"
+        role: req.body.role
       });
 
       employee.save(function (err, newEmployee) {
@@ -64,7 +64,7 @@ router.post('/login', (req, res) => {
             }
             res.send(apiResponse);
           } else {
-            if (req.body.email == "manager@gmail.com") {
+            if (user.role == "Manager") {
               let apiResponse = {
                 status: 999,
                 message: "login successfull",
@@ -93,7 +93,7 @@ router.post('/login', (req, res) => {
 })
 
 router.get('/employee/all', (req, res) => {
-  EmployeeModel.find({ _id: { $ne: "5f8535411820be6390db8f07" } })
+  EmployeeModel.find({ role: { $ne: "Manager" } })
     .select('-__v  -_id')
     .lean()
     .exec((err, result) => {

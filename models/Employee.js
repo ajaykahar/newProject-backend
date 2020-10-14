@@ -21,7 +21,7 @@ const employeeSchema = new Schema({
 	},
 	role:{
 		type:String,
-		default:"user",
+		default:"Employee",
 	}
 });
 
